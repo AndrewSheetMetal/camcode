@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -145,26 +146,13 @@ class _CamCodeScannerState extends State<CamCodeScanner> {
             child: initialized
                 ? Stack(
                     children: <Widget>[
+                      Container(
+                        color: widget.backgroundColor,
+                      ),
                       SizedBox(
                         width: widget.width,
                         height: widget.height,
                         child: _webcamWidget,
-                      ),
-                      Container(
-                        width: widget.width,
-                        height: (widget.height / 2) - (widget.height / 8),
-                        color: widget.backgroundColor,
-                        child: Text(''),
-                      ),
-                      Positioned(
-                        top: (widget.height / 2) + (widget.height / 8),
-                        left: 0,
-                        child: Container(
-                          width: widget.width,
-                          height: (widget.height / 2) - (widget.height / 8),
-                          color: widget.backgroundColor,
-                          child: Text(''),
-                        ),
                       ),
                       if (widget.showDebugFrames)
                         Positioned(
@@ -250,8 +238,7 @@ class CamCodeScannerController {
   /// Waits for the device list completer result
   Future<List<String>> fetchDeviceList() async {
     final _channel = await _channelCompleter.future;
-    final devices =
-        await _channel.invokeMethod<List<dynamic>?>('fetchDeviceList');
+    final devices = await _channel.invokeMethod<List<dynamic>?>('fetchDeviceList');
     return devices?.map((e) => e.toString()).toList() ?? [];
   }
 
